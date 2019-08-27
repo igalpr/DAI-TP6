@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DAI-TP6</string>
+    <string name="mostrar_resultados">Mostrar resultados</string>
+    <string name="elegir_imagen_de_galeria">Elegir imagen de galeria</string>
+</resources>
