@@ -54,15 +54,18 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
         VerEstadistica=VistaParaTrabajar.findViewById(R.id.BotonMostrarEstadistica);
         TXTMostrarResultados=VistaParaTrabajar.findViewById(R.id.EstadisticaParcial);
         imageViewAnalizar=VistaParaTrabajar.findViewById(R.id.ImageViewImagenAEscanear);
-        progressDialog=new ProgressDialog(contexto);
+        progressDialog=new ProgressDialog(this.getContext());
         preferencias=this.getActivity().getSharedPreferences("DAI-TP6",Context.MODE_PRIVATE);
 
+        TomarFoto.setOnClickListener(this);
+        IrAGaleria.setOnClickListener(this);
+        VerEstadistica.setOnClickListener(this);
         String ApiEndPoint="https://brazilsouth.api.cognitive.microsoft.com/face/v1.0";
         String APIKey="29105693a23347ba9409bd930df29464";
 
         try {
         serviceClient=new FaceServiceRestClient(ApiEndPoint,APIKey);
-        if(ContextCompat.checkSelfPermission(contexto, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
+        if(ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
         {
             TomarFoto.setEnabled(false);
             ActivityCompat.requestPermissions(this.getActivity(),new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},CodigoPedirPermisos);
@@ -81,8 +84,10 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
     @Override
     public void onRequestPermissionsResult(int CodRespuesta, @NonNull String[] permissions, @NonNull int[] ResultadosPermisos) {
         super.onRequestPermissionsResult(CodRespuesta, permissions, ResultadosPermisos);
+
+        Log.d("onRequestPermissionsResult","entro "+CodRespuesta);
         if(CodRespuesta==CodigoPedirPermisos)
-        {
+            {
             for (int puntero=0;puntero<permissions.length;puntero++)
             {
                 Log.d("PermisionGranted:","Permisos: "+puntero+" -Nombre: "+permissions[puntero]+" - "+(ResultadosPermisos[puntero]==PackageManager.PERMISSION_GRANTED));
@@ -190,11 +195,12 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
                     resultado=serviceClient.detect(imagenAProcesar[0],true,false,atributos);
                 }catch(Exception error)
                 {
-                    Log.d("error"," "+error.getLocalizedMessage());
+                    Log.d("error","Error en SC: "+error.getLocalizedMessage());
 
                 }
                 return resultado;
             }
+
 
             @Override
             protected void onProgressUpdate(String... values) {

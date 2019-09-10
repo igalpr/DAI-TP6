@@ -17,7 +17,7 @@
     <Button
         android:layout_width="180sp"
         android:layout_height="wrap_content"
-        android:text="@string/elegir_imagen_de_galeria"
+        android:text="Tomar foto"
         app:layout_constraintBottom_toTopOf="@id/BotonMostrarEstadistica"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/BotonElegirGaleria"
