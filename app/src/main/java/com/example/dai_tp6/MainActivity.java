@@ -12,6 +12,7 @@ public class MainActivity extends Activity {
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     int OpcionSeleccionada;
+    boolean Hair,Glasses,Makeup,Smile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +23,10 @@ public class MainActivity extends Activity {
         fragmentTransaction.replace(R.id.FragmentARemplazar,home);
         fragmentTransaction.commit();
         AlertDialog.Builder mensaje=new AlertDialog.Builder(this);
+        Hair=false;
+        Glasses=false;
+        Makeup=false;
+        Smile=false;
         mensaje.setTitle("Cosas para evaluar en las imagenes ademas de genero, edad y pelo facial");
         String[] opciones={"Hair","Glasses","MakeUp","Smile"};
         boolean[] OpcionesRespuestas={false,false,false,false};
@@ -47,19 +52,23 @@ public class MainActivity extends Activity {
 
             if(OpcionSeleccionada==0)
             {
-
+                Log.d("Opcionelegida","Hair");
+                Hair=true;
             }
             if(OpcionSeleccionada==1)
             {
-
+                Log.d("Opcion elegida","Glasses");
+                Glasses=true;
             }
             if(OpcionSeleccionada==2)
             {
-
+                Log.d("Opcion elegida","Makeup");
+            Makeup=true;
             }
             if(OpcionSeleccionada==3)
             {
-
+                Log.d("Opcion elegida","Smile");
+                Smile=true;
             }
         }
     };

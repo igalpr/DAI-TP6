@@ -190,8 +190,13 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
                     atributos=new FaceServiceClient.FaceAttributeType[]{
                             FaceServiceClient.FaceAttributeType.Age,
                             FaceServiceClient.FaceAttributeType.Gender,
-                            FaceServiceClient.FaceAttributeType.FacialHair
+                            FaceServiceClient.FaceAttributeType.FacialHair,
+                            FaceServiceClient.FaceAttributeType.Hair,
+                            FaceServiceClient.FaceAttributeType.Smile,
+                            FaceServiceClient.FaceAttributeType.Makeup,
+                            FaceServiceClient.FaceAttributeType.Glasses
                     };
+                    MainActivity main=(MainActivity) getActivity();
                     resultado=serviceClient.detect(imagenAProcesar[0],true,false,atributos);
                 }catch(Exception error)
                 {
@@ -255,11 +260,29 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
         cantidadHombres=preferencias.getInt("cantidadHombres",0);
         CantidadMujeres=preferencias.getInt("cantidadMujeres",0);
         String Mensaje="";
+        MainActivity main=(MainActivity)getActivity();
         for(int puntero=0;puntero<carasAProcesar.length;puntero++)
         {
             Mensaje+="Edad: "+carasAProcesar[puntero].faceAttributes.age;
             Mensaje+="- Género: "+carasAProcesar[puntero].faceAttributes.gender;
             Mensaje+="- Barba: "+carasAProcesar[puntero].faceAttributes.facialHair.beard;
+            if(main.Hair)
+            {
+                Mensaje+="-Pelo: "+carasAProcesar[puntero].faceAttributes.hair;
+            }
+            if(main.Smile)
+            {
+                Mensaje+="-Sonrisa: "+carasAProcesar[puntero].faceAttributes.smile;
+            }
+            if(main.Glasses)
+            {
+                Mensaje+="-Anteojos: "+carasAProcesar[puntero].faceAttributes.glasses;
+            }
+            if(main.Makeup)
+            {
+                Mensaje+="-Maquillaje: "+carasAProcesar[puntero].faceAttributes.makeup;
+            }
+
             if(carasAProcesar[puntero].faceAttributes.gender.equals("male"))
             {
                 cantidadHombres++;
