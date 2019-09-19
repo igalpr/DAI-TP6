@@ -68,7 +68,14 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
         if(ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
         {
             TomarFoto.setEnabled(false);
+            TXTMostrarResultados.setText("por favor recargue la aplicacion para que se aplquen los permisos");
             ActivityCompat.requestPermissions(this.getActivity(),new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},CodigoPedirPermisos);
+            Log.d("Permisos"," post");
+            if(ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED)
+            {
+                TomarFoto.setEnabled(true);
+
+            }
         }
         else
         {
@@ -100,18 +107,19 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
                     TengoPermisos=false;
                 }
             }
+            Log.d("Permisos"," "+TengoPermisos);
             if(TengoPermisos)
             {
                 Log.d("Permisos","Tengo los 151");
-                TomarFoto.setEnabled(false);
-            }
+                MainActivity main=(MainActivity)getActivity();
+                main.Volver();            }
             else
             {
                 Log.d("Permisos","No los atrape a todos");
             }
         }
+        Log.d("Permisos","a");
     }
-
     @Override
     public void onClick(View v) {
         if(v.getId()==TomarFoto.getId())

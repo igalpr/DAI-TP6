@@ -5,7 +5,11 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,6 +17,8 @@ public class MainActivity extends Activity {
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     int OpcionSeleccionada;
+    static MediaPlayer mediaPlayer;
+    static boolean isPlayingAudio=false;
     boolean Hair,Glasses,Makeup,Smile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +29,26 @@ public class MainActivity extends Activity {
         fragmentTransaction=fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.FragmentARemplazar,home);
         fragmentTransaction.commit();
-        AlertDialog.Builder mensaje=new AlertDialog.Builder(this);
         Hair=false;
         Glasses=false;
         Makeup=false;
         Smile=false;
+        PlayAudio(this,R.raw.cancion);
+        MostrarMensaje();
+    }
+    public static void PlayAudio(Context c, int id){
+        mediaPlayer = MediaPlayer.create(c, id);
+        SoundPool soundPool = new SoundPool(4, AudioManager.STREAM_MUSIC,50);
+        if (!mediaPlayer.isPlaying())
+        {
+            isPlayingAudio= true;
+            mediaPlayer.start();
+            mediaPlayer.setLooping(true);
+        }
+    }
+    public void MostrarMensaje()
+    {
+        AlertDialog.Builder mensaje=new AlertDialog.Builder(this);
         mensaje.setTitle("Cosas para evaluar en las imagenes ademas de genero, edad y pelo facial");
         String[] opciones={"Hair","Glasses","MakeUp","Smile"};
         boolean[] OpcionesRespuestas={false,false,false,false};
