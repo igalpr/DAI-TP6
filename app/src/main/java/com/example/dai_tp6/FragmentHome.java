@@ -103,7 +103,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
             if(TengoPermisos)
             {
                 Log.d("Permisos","Tengo los 151");
-                TomarFoto.setEnabled(true);
+                TomarFoto.setEnabled(false);
             }
             else
             {
@@ -125,7 +125,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
         if(v.getId()==VerEstadistica.getId())
         {
             MainActivity main=(MainActivity)getActivity();
-
+            main.Reemplazar();
         }
     }
     public void PresionarTomarFoto(View vista)
@@ -256,31 +256,41 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
     }
     public void procesarResultadosDeCaras(Face[] carasAProcesar)
     {
-        int cantidadHombres,CantidadMujeres;
+        int cantidadHombres,CantidadMujeres, contadorPersonas, edad, barba, laPelada, sonrisa, anteojos, maquillaje, cantHombresConBarba, cantidadIntelectuales;
         cantidadHombres=preferencias.getInt("cantidadHombres",0);
         CantidadMujeres=preferencias.getInt("cantidadMujeres",0);
+        contadorPersonas=preferencias.getInt("contadorPersonas",0);
+        edad=preferencias.getInt("edad",0);
+        barba=preferencias.getInt("barba",0);
+        laPelada=preferencias.getInt("laPelada",0);
+        sonrisa=preferencias.getInt("sonrisa",0);
+        anteojos=preferencias.getInt("anteojos",0);
+        maquillaje=preferencias.getInt("maquillaje",0);
+        cantHombresConBarba=preferencias.getInt("cantHombresConBarba",0);
+        cantidadIntelectuales=preferencias.getInt("cantidadIntelectuales",0);
         String Mensaje="";
         MainActivity main=(MainActivity)getActivity();
         for(int puntero=0;puntero<carasAProcesar.length;puntero++)
         {
+            contadorPersonas++;
             Mensaje+="Edad: "+carasAProcesar[puntero].faceAttributes.age;
             Mensaje+="- Género: "+carasAProcesar[puntero].faceAttributes.gender;
             Mensaje+="- Barba: "+carasAProcesar[puntero].faceAttributes.facialHair.beard;
             if(main.Hair)
             {
-                Mensaje+="-Pelo: "+carasAProcesar[puntero].faceAttributes.hair;
+                Mensaje+="- Sin Pelo: "+carasAProcesar[puntero].faceAttributes.hair.bald;
             }
             if(main.Smile)
             {
-                Mensaje+="-Sonrisa: "+carasAProcesar[puntero].faceAttributes.smile;
+                Mensaje+="- Sonrisa: "+carasAProcesar[puntero].faceAttributes.smile;
             }
             if(main.Glasses)
             {
-                Mensaje+="-Anteojos: "+carasAProcesar[puntero].faceAttributes.glasses;
+                Mensaje+="- Anteojos: "+carasAProcesar[puntero].faceAttributes.glasses;
             }
             if(main.Makeup)
             {
-                Mensaje+="-Maquillaje: "+carasAProcesar[puntero].faceAttributes.makeup;
+                Mensaje+="- Maquillaje de Labios: "+carasAProcesar[puntero].faceAttributes.makeup.lipMakeup;
             }
 
             if(carasAProcesar[puntero].faceAttributes.gender.equals("male"))
@@ -291,10 +301,40 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
             {
                 CantidadMujeres++;
             }
+            edad+=carasAProcesar[puntero].faceAttributes.age;
+            barba+=carasAProcesar[puntero].faceAttributes.facialHair.beard;
+            laPelada+=carasAProcesar[puntero].faceAttributes.hair.bald;
+            sonrisa+=carasAProcesar[puntero].faceAttributes.smile;
+            if(carasAProcesar[puntero].faceAttributes.glasses.name()!="NoGlasses")
+            {anteojos++;}
+            if(carasAProcesar[puntero].faceAttributes.makeup.lipMakeup)
+            {
+                maquillaje++;
+            }
+            if(carasAProcesar[puntero].faceAttributes.gender.equals("male") && carasAProcesar[puntero].faceAttributes.facialHair.beard>0)
+            {
+                cantHombresConBarba++;
+            }
+            if(carasAProcesar[puntero].faceAttributes.facialHair.beard>=0.3 && !carasAProcesar[puntero].faceAttributes.glasses.equals("NoGlasses"))
+            {
+                cantidadIntelectuales++;
+            }
+
+
             SharedPreferences.Editor editorPreferencias;
             editorPreferencias=preferencias.edit();
             editorPreferencias.putInt("cantidadHombres",cantidadHombres);
             editorPreferencias.putInt("cantidadMujeres",CantidadMujeres);
+            editorPreferencias.putInt("contadorPersonas",contadorPersonas);
+
+            editorPreferencias.putInt("edad",edad);
+            editorPreferencias.putInt("barba",barba);
+            editorPreferencias.putInt("laPelada",laPelada);
+            editorPreferencias.putInt("sonrisa",sonrisa);
+            editorPreferencias.putInt("anteojos",anteojos);
+            editorPreferencias.putInt("maquillaje",maquillaje);
+            editorPreferencias.putInt("cantHombresConBarba",cantHombresConBarba);
+            editorPreferencias.putInt("cantidadIntelectuales",cantidadIntelectuales);
             editorPreferencias.commit();
             if(puntero<carasAProcesar.length-1)
             {

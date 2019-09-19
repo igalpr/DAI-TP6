@@ -8,13 +8,19 @@
         android:layout_height="350sp"
         android:id="@+id/ImageViewImagenAEscanear"
         app:layout_constraintTop_toTopOf="parent"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="200sp"
+        app:layout_constraintTop_toBottomOf="@id/ImageViewImagenAEscanear"
+        app:layout_constraintBottom_toTopOf="@id/BotonElegirGaleria"
+        android:id="@+id/Scrool">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/EstadisticaParcial"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/ImageViewImagenAEscanear"
         />
+    </ScrollView>
     <Button
         android:layout_width="180sp"
         android:layout_height="wrap_content"
